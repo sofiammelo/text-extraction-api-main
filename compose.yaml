@@ -1,0 +1,15 @@
+services:
+  text-extraction-app:
+    build:
+      context: .
+      dockerfile: ./.docker/dockerfile
+    restart: always
+    container_name: text-extration-app
+    ports:
+      - "8081:8081"
+    networks:
+      - network-text-extraction
+
+networks:
+  network-text-extraction:
+    driver: bridge
