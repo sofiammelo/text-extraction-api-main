@@ -4,6 +4,7 @@ from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 import re
 
+from app.extensions import db
 class ExtractionService:
 
     def extraction_method_service(self, pdf_file: FileStorage) -> Document: 
@@ -13,8 +14,12 @@ class ExtractionService:
 
         document = Document(
             name = pdf_file.filename,
-            content = texto_limpo
+            content = texto_limpo,
+            source_type="pdf"
         )
+
+        db.session.add(document)
+        db.session.commit()
 
         return document
 

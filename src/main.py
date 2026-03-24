@@ -1,11 +1,6 @@
-from flask import Flask
-from app.routes.ExampleRoutes import example_routes
-from app.routes.ExtractionRoutes import extraction_routes
+from app import create_app
 
-app = Flask(__name__)
-
-app.register_blueprint(example_routes)
-app.register_blueprint(extraction_routes)
+app = create_app()
 
 if __name__ == "__main__":
     app.run(
