@@ -7,12 +7,18 @@ class ExtractionController:
         self.extractionService = ExtractionService()
 
     def extraction_method(self):
-        pdf_recebido = request.files["file"]
+        try:    
+            pdf_recebido = request.files["file"]
 
-        document = self.extractionService.extraction_method_service(
-            pdf_file = pdf_recebido
-        )
+            document = self.extractionService.extraction_method_service(
+                pdf_file = pdf_recebido
+            )
 
-        return jsonify({
-            "message": document.content
-        }), 200
+            return jsonify({
+                "message": document.content
+            }), 200
+        
+        except Exception as e:
+            return jsonify({
+                "message": str(e)
+            }), 500
