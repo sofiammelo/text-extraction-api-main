@@ -22,6 +22,33 @@ class ExtractionService:
         db.session.commit()
 
         return document
+    
+    def get_id(self, document_id: int) -> Document | None: 
+        return Document.query.get(document_id)
+    
+    def get_all(self, page: int = 1, limit: int = 10, name: str = None) -> dict:
+        query = Document.query
+
+        if name:
+            query = query.filter(Document.name.ilike(f"%{name}%"))
+
+        pagination = query.paginate(page=page, per_page=limit)
+
+        return {
+            "page": page,
+            "limit": limit,
+            "total": pagination.total,
+            "pages": pagination.pages,
+            "data": [
+                {
+                    "id": document.id,
+                    "name": document.name,
+                    "content": document.content,
+                    "source_type": document.source_type
+                }
+                for document in pagination.items
+            ]
+        }
 
     def validar_pdf(self, pdf_recebido: FileStorage) -> None:
         try:
